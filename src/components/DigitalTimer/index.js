@@ -6,11 +6,11 @@ class DigitalTimer extends Component {
     timeInMinutes: 25 * 60,
     isTimerRunning: false,
     isTimerStartOrPaused: false,
+    setTimerTime: 25,
   }
 
-  renderTimer = () => {
+  renderTimer = async () => {
     const {isTimerRunning} = this.state
-    console.log(isTimerRunning)
     if (isTimerRunning) {
       this.timerID = setInterval(this.updateTimer, 1000)
     } else {
@@ -19,16 +19,18 @@ class DigitalTimer extends Component {
   }
 
   decreaseTimer = () => {
-    const {timeInMinutes} = this.state
+    const {timeInMinutes, setTimerTime} = this.state
     if (timeInMinutes > 60) {
       this.setState({timeInMinutes: timeInMinutes - 60})
+      this.setState({setTimerTime: setTimerTime - 1})
     }
   }
 
   increaseTimer = () => {
-    const {timeInMinutes} = this.state
+    const {timeInMinutes, setTimerTime} = this.state
     if (timeInMinutes < 60 * 60) {
       this.setState({timeInMinutes: timeInMinutes + 60})
+      this.setState({setTimerTime: setTimerTime + 1})
     }
   }
 
@@ -68,8 +70,12 @@ class DigitalTimer extends Component {
   }
 
   render() {
-    const {isTimerRunning, timeInMinutes, isTimerStartOrPaused} = this.state
-    const setTimerTime = Math.floor(timeInMinutes / 60)
+    const {
+      isTimerRunning,
+      timeInMinutes,
+      isTimerStartOrPaused,
+      setTimerTime,
+    } = this.state
     const startOrPauseImageUrl = isTimerRunning
       ? 'https://assets.ccbp.in/frontend/react-js/pause-icon-img.png'
       : 'https://assets.ccbp.in/frontend/react-js/play-icon-img.png'
@@ -80,7 +86,7 @@ class DigitalTimer extends Component {
         <div className="timer-card-container">
           <div className="timer-container">
             <div className="timer-card">
-              <p className="timer">{this.runningTimer(timeInMinutes)}</p>
+              <h1 className="timer">{this.runningTimer(timeInMinutes)}</h1>
               <p className="timer-status">
                 {isTimerRunning ? 'Running' : 'Paused'}
               </p>
